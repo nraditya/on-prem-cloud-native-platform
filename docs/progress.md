@@ -32,3 +32,20 @@ Status: Completed
 - Provisioned namespace, deployment, and service using Terraform
 - Verified resources using kubectl
 - Tested /health endpoint after Terraform deployment
+
+## Prometheus and Grafana Monitoring
+
+Monitoring stack was installed using Helm with kube-prometheus-stack.
+
+Completed:
+- Created monitoring namespace.
+- Installed Prometheus Operator, Prometheus, Alertmanager, kube-state-metrics, and Grafana.
+- Created ServiceMonitor for cloudops-api-service.
+- Verified that Prometheus can scrape the FastAPI /metrics endpoint.
+- Created Grafana dashboard for CloudOps API monitoring.
+- Monitored API target status, available replicas, desired replicas, CPU usage, memory usage, and FastAPI process memory.
+
+Evidence:
+- Prometheus target status: UP
+- Grafana dashboard: CloudOps API Monitoring Dashboard
+- Dashboard JSON exported to monitoring/grafana-dashboard.json
