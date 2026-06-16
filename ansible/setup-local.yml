@@ -1,0 +1,81 @@
+---
+- name: Check local DevOps environment for CloudOps platform
+  hosts: local
+  gather_facts: true
+
+  tasks:
+    - name: Show operating system information
+      debug:
+        msg: "Running on {{ ansible_distribution }} {{ ansible_distribution_version }}"
+
+    - name: Check Docker version
+      command: docker --version
+      register: docker_version
+      changed_when: false
+
+    - name: Show Docker version
+      debug:
+        var: docker_version.stdout
+
+    - name: Check kubectl version
+      command: kubectl version --client
+      register: kubectl_version
+      changed_when: false
+
+    - name: Show kubectl version
+      debug:
+        var: kubectl_version.stdout
+
+    - name: Check k3d version
+      command: k3d version
+      register: k3d_version
+      changed_when: false
+
+    - name: Show k3d version
+      debug:
+        var: k3d_version.stdout_lines
+
+    - name: Check Helm version
+      command: helm version --short
+      register: helm_version
+      changed_when: false
+
+    - name: Show Helm version
+      debug:
+        var: helm_version.stdout
+
+    - name: Check Terraform version
+      command: terraform version
+      register: terraform_version
+      changed_when: false
+
+    - name: Show Terraform version
+      debug:
+        var: terraform_version.stdout_lines
+
+    - name: Check Kubernetes nodes
+      command: kubectl get nodes
+      register: kubernetes_nodes
+      changed_when: false
+
+    - name: Show Kubernetes nodes
+      debug:
+        var: kubernetes_nodes.stdout_lines
+
+    - name: Check CloudOps application pods
+      command: kubectl get pods -n cloudops
+      register: cloudops_pods
+      changed_when: false
+
+    - name: Show CloudOps pods
+      debug:
+        var: cloudops_pods.stdout_lines
+
+    - name: Check monitoring pods
+      command: kubectl get pods -n monitoring
+      register: monitoring_pods
+      changed_when: false
+
+    - name: Show monitoring pods
+      debug:
+        var: monitoring_pods.stdout_lines

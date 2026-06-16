@@ -49,3 +49,23 @@ Evidence:
 - Prometheus target status: UP
 - Grafana dashboard: CloudOps API Monitoring Dashboard
 - Dashboard JSON exported to monitoring/grafana-dashboard.json
+
+## Bash and Ansible Automation
+
+Completed:
+- Created Bash scripts to start the k3d cluster, check application health, verify monitoring resources, open Prometheus, open Grafana, and generate API traffic.
+- Created Ansible inventory for local automation.
+- Created Ansible playbook to validate Docker, kubectl, k3d, Helm, Terraform, Kubernetes nodes, CloudOps API pods, and monitoring pods.
+- Verified that automation scripts can be executed from the project repository.
+
+Scripts:
+- scripts/start-cluster.sh
+- scripts/health-check.sh
+- scripts/check-monitoring.sh
+- scripts/open-prometheus.sh
+- scripts/open-grafana.sh
+- scripts/generate-traffic.sh
+
+Ansible:
+- ansible/inventory.ini
+- ansible/setup-local.yml
