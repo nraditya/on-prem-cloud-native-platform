@@ -15,3 +15,5 @@ terraform.tfvars
 # OS / Editor
 .DS_Store
 .vscode/
+.venv/
+.pytest_cache/
