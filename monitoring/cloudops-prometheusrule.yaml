@@ -1,0 +1,37 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cloudops-api-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus-stack
+    app: cloudops-api
+spec:
+  groups:
+    - name: cloudops-api.rules
+      rules:
+        - alert: CloudOpsAPITargetDown
+          expr: |
+            (up{job="cloudops-api-service"} == 0)
+            or
+            absent(up{job="cloudops-api-service"})
+          for: 1m
+          labels:
+            severity: critical
+            service: cloudops-api
+            environment: on-premise
+          annotations:
+            summary: "CloudOps API target is down"
+            description: "Prometheus cannot scrape one or more CloudOps API targets for at least 1 minute."
+
+        - alert: CloudOpsAPIErrorActivity
+          expr: |
+            sum(increase(cloudops_error_total[2m])) > 0
+          for: 30s
+          labels:
+            severity: warning
+            service: cloudops-api
+            environment: on-premise
+          annotations:
+            summary: "CloudOps API error activity detected"
+            description: "The CloudOps API error counter has increased during the last 2 minutes."
