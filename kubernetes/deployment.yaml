@@ -5,31 +5,61 @@ metadata:
   namespace: cloudops
   labels:
     app: cloudops-api
+
 spec:
   replicas: 2
+
   selector:
     matchLabels:
       app: cloudops-api
+
   template:
     metadata:
       labels:
         app: cloudops-api
+
     spec:
       containers:
         - name: cloudops-api
           image: cloudops-status-api:local
           imagePullPolicy: Never
+
           ports:
-            - containerPort: 8000
+            - name: http
+              containerPort: 8000
+
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
           readinessProbe:
             httpGet:
               path: /health
               port: 8000
             initialDelaySeconds: 5
             periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
           livenessProbe:
             httpGet:
               path: /health
               port: 8000
             initialDelaySeconds: 10
             periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
