@@ -5,16 +5,21 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-RUN addgroup --system appgroup \
-    && adduser --system --ingroup appgroup appuser
+RUN groupadd --gid 10001 appgroup \
+    && useradd \
+       --uid 10001 \
+       --gid 10001 \
+       --no-create-home \
+       --shell /usr/sbin/nologin \
+       appuser
 
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY --chown=appuser:appgroup main.py .
+COPY --chown=10001:10001 main.py .
 
-USER appuser
+USER 10001:10001
 
 EXPOSE 8000
 
